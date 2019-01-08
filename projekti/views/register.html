@@ -1,0 +1,129 @@
+﻿
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="/views/css/styles2.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+
+        
+
+        $(document).ready(function () {
+
+            
+
+            $('#tallenna').click(function () {
+
+                
+
+                var tunnus = $('#tunnus').val();
+                var salasana = $('#salasana').val();
+                var nimi = $('#nimi').val();
+                var puhnro = $('#puhnro').val();
+                var osoite = $('#osoite').val();
+
+
+                $.ajax(
+                    {
+                        url: "http://localhost:3003/createUser",
+                        method: 'post',  // Vaihtoehtoina get, post, delete, put (ainakin)
+                        data: { tunnus: tunnus, salasana: salasana, nimi: nimi, puhnro: puhnro, osoite: osoite } // json-muodossa data, joka halutaan lähettää serverille (sama kuin laittaisi url:n perään ?delay=1)
+                    }).done(function (data, textStatus, jqXHR) {
+
+                        // Suoritetaan kun kutsu on valmis
+                        console.log("OK");
+                        window.location = "http://localhost:3003/";
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        // Suoriteaan, jos kutsu epäonnistuu
+                        console.log("Kutsu epäonnistui");
+
+                    }).always(function (jqXHR, textStatus, errorThrown) {
+                        // suoritetaan aina (riippumatta onnistuiko kutsu vai ei)
+                        // HUOM! 1. parametri sisältää datan jos kutsu onnistui ja 3. parametri jqXHR-olion. Jos kutsu epäonnistui, 1. parametri on jqXHR-olio ja 3. errorThrown
+                        console.log("Kutsu always");
+
+                    });
+
+
+            });
+
+            
+
+            $('#peruuta').click(function () {
+
+                window.location = "http://localhost:3003/";
+
+            });
+
+
+        });
+
+        var check = function () {
+            if (document.getElementById('salasana').value ==
+                document.getElementById('salasana_uusi').value) {
+                document.getElementById('message').style.color = 'green';
+                document.getElementById('message').innerHTML = 'Salasanan vahvistus onnistui';
+            } else {
+                document.getElementById('message').style.color = 'red';
+                document.getElementById('message').innerHTML = 'Salasanat eivät mätsää';
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+
+    <form method="post" action="register.html">
+        <div class="input-group">
+            <label for="tunnus"> Käyttäjätunnus: </label>
+            <input type="text" name="tunnus" id="tunnus" class="text ui-widget-content ui-corner-all">
+        </div>
+        <div class="input-group">
+            <label for="salasana"> Salasana: </label>
+            <input type="password" name="salasana" id="salasana"  onkeyup='check();' class="text ui-widget-content ui-corner-all">
+        </div>
+        <div class="input-group">
+            <label for="salasana_uusi"> Salasana uudelleen: </label>
+            <input type="password" name="salasana_uusi" id="salasana_uusi" onkeyup='check();' class="text ui-widget-content ui-corner-all">
+            <span id='message'></span>
+        </div>
+        <div class="input-group">
+            <label id="nimimerkkierror" value=""> </label>
+            <label id="salasanaerror" value=""> </label>
+        </div>
+
+        <div class="input-group">
+            <label for="nimi"> Koko nimi: </label>
+            <input id="nimi" type="text">
+        </div>
+
+        <div class="input-group">
+            <label for="puhnro"> Puhelinnumero: </label>
+            <input id="puhnro" type="text" class="text ui-widget-content ui-corner-all">
+        </div>
+        <div class="input-group">
+            <label for="osoite"> Osoite: </label>
+            <input id="osoite" type="text" class="text ui-widget-content ui-corner-all">
+        </div>
+        <div>
+            <button type="button" id="tallenna">Tallenna</button>
+            <button type="button" id="peruuta">Peruuta</button>
+        </div>
+
+
+
+        
+    </form>
+
+
+
+</body>
+</html>

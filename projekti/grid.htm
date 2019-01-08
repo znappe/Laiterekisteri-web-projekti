@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Esimerkkejä grid:stä!</title>
+        <style>
+            .myForm {
+              display: grid;
+              grid-template-columns: [labels] auto [controls] 1fr;
+              grid-auto-flow: row;
+              grid-gap: .8em .5em;
+              background: darkseagreen;
+              padding: 2em;
+            }
+            label,
+            fieldset  {
+              grid-column: labels;
+              grid-row: auto;
+            }
+            input, 
+            select,
+            textarea,
+            button {
+              grid-column: controls;
+              grid-row: auto;
+              border: 0;
+              padding: 0.5em;
+            }
+            fieldset {
+              grid-column: span 2;
+            }  
+            button {
+              background: darkkhaki;
+              color: white;
+              }
+            textarea {
+              min-height: 3em;
+              }
+          </style>
+          
+    </head>
+    <body>
+        <div>
+        <form class="myForm">
+            <label for="customer_name">Nimi</label>
+            <input type="text" name="customer_name" id="customer_name" required>
+          
+            <label for="phone_number">Puhelin</label>
+            <input type="tel" name="phone_number" id="phone_number">
+          
+            <label for="email_address">Email</label>
+            <input type="email" name="email_address" id="email_address">
+          
+            <label for="pickup_time">Noutoaika</label>
+            <input type="datetime-local" name="pickup_time" id="pickup_time" required>
+          
+            <label for="pickup_place">Noutopaikka</label>
+            <select name="pickup_place" id="pickup_place">
+              <option value="" selected="selected">Valitse</option>
+              <option value="office" >Taksiasema</option>
+              <option value="town_hall" >Osoite</option>
+              <option value="telepathy" >Sovitaan myöhemmin</option>
+            </select>
+          
+            <label for="dropoff_place">Kohde</label>
+            <input type="text" name="dropoff_place" id="dropoff_place" required list="destinations">
+          
+            <datalist id="destinations">
+              <option value="Lentokenttä">
+              <option value="Keskusta">
+              <option value="Muu paikka">
+            </datalist>
+
+            <fieldset>
+                <legend>Millaisen taksin tarvitse?</legend>
+                <label> <input type="radio" name="taxi" id="taxi_car" required value="car">Auto</label>
+                <label> <input type="radio" name="taxi" id="taxi_van" required value="van">Tila-auto</label>
+                <label> <input type="radio" name="taxi" id="taxi_tuk" required value="tuktuk">Vene</label>
+            </fieldset>
+        
+            <fieldset>
+                <legend>Lisävaatimukset</legend>
+                <label> <input type="checkbox" name="extras" id="extras_baby" value="baby">Suksiboxi</label>
+                <label> <input type="checkbox" name="extras" id="extras_wheel" value="wheelchair">Vetokoukku</label>
+                <label> <input type="checkbox" name="extras" id="extras_tip" value="tip">Lastenistuin</label>
+            </fieldset>
+                
+                
+            <label for="comments">Eritysohjeet</label>
+            <textarea name="comments" id="comments" maxlength="500"></textarea>
+          
+            <button>Tee varaus</button>
+          
+          </form>
+        </div>
+    </body>
+</html>

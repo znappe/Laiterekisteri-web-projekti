@@ -1,0 +1,200 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Laiterekisteri</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">>
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.10.15/js/dataTables.bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+
+
+    <style>
+        .buttonTarkista {
+            background-color: dodgerblue;
+            color: white;
+            border-radius: 4px;
+            border: none;
+        }
+
+        .Lohko2 {
+            font-size: large;
+            text-align: right;
+        }
+
+        table#mytable td {
+            border: none !important;
+        }
+    </style>
+
+    <script>
+        $(document).ready(function () {
+
+            var keksi;
+
+            if (!!$.cookie('user')) {
+                keksi = $.cookie('user');
+                console.log("Suklaamuffinssi löytyi: " + keksi);
+            }
+            else {
+                console.log("Vooi vitttttu");
+            }
+
+
+            $('#ulos').click(function () {
+
+                window.location = "http://localhost:3003";
+                $.removeCookie('user', { path: '/' });
+                $.removeCookie('password', { path: '/' });
+
+            });
+
+            $('#muokkaa').click(function () {
+
+                window.location = "http://localhost:3003/muokkaus";
+
+            });
+
+            $('#taulu').on('click', '#varaa', function () {
+
+                var laite_id = $(this).closest('tr').find('td:eq(0)').text();
+                $.cookie('laite_id', laite_id);
+                window.location = "http://localhost:3003/varaalaite";
+
+            });
+        });
+
+    </script>
+</head>
+<body>
+
+    <nav class="Lohko2">
+
+        <input type="button" id="muokkaa" value="Muokkaa käyttäjätietoja" />
+        <input type="button" id="ulos" value="Kirjaudu ulos" />
+        <input type="button" id="tiedot" value="Omat varaukset/lainaukset" />
+
+
+
+    </nav>
+
+
+        <div>
+            <table id="taulu" name="taulu" class="table table-bordered" style="width:60%" align="center">
+                <thead>
+                    <tr>
+                        <th>
+                            ID
+                        </th>
+                        <th>
+                            Tyyppi
+                        </th>
+                        <th>
+                            Merkki
+                        </th>
+                        <th>
+                            Malli
+                        </th>
+                        <th>
+                            Omistaja
+                        </th>
+                        <th>
+                            Nimi
+                        </th>
+                        <th>
+                            Kuvaus
+                        </th>
+                        <th>
+
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+
+
+
+    <script type="text/javascript" language="javascript">
+
+        $(document).ready(function () {
+
+            $('#tiedot').click(function () {
+
+                window.location = "http://localhost:3003/varaukset";
+
+            });
+
+
+            HaeData();
+
+            var data;
+
+
+        function HaeData() {
+
+
+            $.ajax({
+                url: "http://localhost:3003/haeLaitteet",
+                method: 'GET',
+                "dataType": "json"
+            }).done(function (data, textStatus, jqXHR) {
+
+                editor = $('#taulu').DataTable({
+
+                    "data": data,
+                    "columns": [
+                        { "data": "laite_id" },
+                        { "data": "tyyppi_id" },
+                        { "data": "merkki" },
+                        { "data": "malli" },
+                        { "data": "omistaja" },
+                        { "data": "nimi" },
+                        { "data": "kuvaus" },
+                        { "defaultContent": '<button id="varaa">Varaa</button>' },
+                    ],
+
+                   
+                });
+
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                console.log("Kutsu epäonnistui");
+
+            }).always(function (jqXHR, textStatus, errorThrown) {
+                console.log("meow");
+            });
+        }
+
+
+
+
+        // Accordion
+        function tabletit() {
+            var x = document.getElementById("tabletit_div");
+            if (x.className.indexOf("w3-show") == -1) {
+                x.className += " w3-show";
+            } else {
+                x.className = x.className.replace(" w3-show", "");
+            }
+        }
+        // Click on the "Jeans" link on page load to open the accordion for demo purposes
+        document.getElementById("myBtn").click();
+
+
+        });
+    </script>
+
+
+
+
+
+</body>
+</html>

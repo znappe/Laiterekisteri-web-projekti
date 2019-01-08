@@ -1,0 +1,108 @@
+﻿
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+    <link rel="stylesheet" type="text/css" href="/views/css/styles2.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <script>
+        $(document).ready(function () {
+
+            $('#tallenna').click(function () {
+
+                var merkki = $('#merkki').val();
+                var malli = $('#malli').val();
+                var tyyppi = $('#tyyppi').val();
+                var omistaja = $('#omistaja').val();
+                var nimi = $('#nimi').val();
+                var kuvaus = $('#kuvaus').val();
+                
+
+
+                $.ajax(
+                    {
+                        url: "http://localhost:3003/uusiLaite",
+                        method: 'post',  // Vaihtoehtoina get, post, delete, put (ainakin)
+                        data: { tyyppi: tyyppi, merkki: merkki, malli: malli, omistaja: omistaja, nimi: nimi, kuvaus: kuvaus}
+                    }).done(function (data, textStatus, jqXHR) {
+
+                        // Suoritetaan kun kutsu on valmis
+                        console.log("OK");
+                        window.location = "http://localhost:3003/adminsivu";
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        // Suoriteaan, jos kutsu epäonnistuu
+                        console.log("Kutsu epäonnistui");
+
+                    }).always(function (jqXHR, textStatus, errorThrown) {
+                        // suoritetaan aina (riippumatta onnistuiko kutsu vai ei)
+                        // HUOM! 1. parametri sisältää datan jos kutsu onnistui ja 3. parametri jqXHR-olion. Jos kutsu epäonnistui, 1. parametri on jqXHR-olio ja 3. errorThrown
+                        console.log("Kutsu always");
+
+                    });
+
+
+            });
+
+            
+
+            $('#peruuta').click(function () {
+
+                window.location = "http://localhost:3003/adminsivu";
+
+            });
+
+
+        });
+
+    </script>
+</head>
+<body>
+
+
+    <form method="post" action="register.html">
+        <div class="input-group">
+            <label for="tunnus"> Merkki: </label>
+            <input type="text" id="merkki" class="text ui-widget-content ui-corner-all">
+        </div>
+        <div class="input-group">
+            <label for="salasana"> Tyyppi: </label>
+            <input type="text" id="tyyppi" class="text ui-widget-content ui-corner-all">
+        </div>
+        <div class="input-group">
+            <label for="salasana_uusi"> Malli: </label>
+            <input type="text" id="malli" class="text ui-widget-content ui-corner-all">
+        </div>
+
+
+        <div class="input-group">
+            <label for="nimi"> Omistaja: </label>
+            <input id="omistaja" type="text">
+        </div>
+
+        <div class="input-group">
+            <label for="nimi"> Nimi: </label>
+            <input id="nimi" type="text">
+        </div>
+
+        <div class="input-group">
+            <label for="nimi"> Kuvaus: </label>
+            <input id="kuvaus" type="text">
+        </div>
+
+
+        <div>
+            <button type="button" id="tallenna">Tallenna</button>
+            <button type="button" id="peruuta">Peruuta</button>
+        </div>
+
+
+    </form>
+
+</body>
+</html>

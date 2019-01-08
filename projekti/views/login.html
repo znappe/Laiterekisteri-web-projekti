@@ -1,0 +1,146 @@
+﻿
+<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Laiterekisteri</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" href="/views/css/styles.css">
+
+    <script>
+        $(document).ready(function () {
+
+            $('#register').click(function () {
+
+                window.location = "http://localhost:3003/register";
+
+            });
+
+            $('#login').click(function () {
+
+                var tunnus = $('#tunnus').val();
+                var password = $('#password').val();
+
+
+
+                $.ajax(
+                    {
+                        url: "http://localhost:3003/checkUser?checkUser=" + tunnus,
+                        method: 'GET',
+                        "dataType": "JSON"
+                    }).done(function (data, textStatus, jqXHR) {
+
+                        // Suoritetaan kun kutsu on valmis
+                        console.log("OK");
+                        //window.location = "http://localhost:3003/etusivu";
+
+
+                        if (typeof data[0] != 'undefined') {
+
+                            var tunnus = data[0]['tunnus']
+                            var salasana = data[0]['salasana']
+                            var admin = data[0]['admin']
+
+
+
+
+                            if (tunnus == tunnus && password == salasana && admin.data == '1') {
+
+                                console.log("admin-kirjautuminen onnistui");
+                                $.cookie('user', tunnus, { expires: 1 });
+                                $.cookie('password', salasana, { expires: 1 });
+                                window.location = "http://localhost:3003/adminsivu";
+
+
+                            }
+
+                            else if (tunnus == tunnus && password == salasana) {
+
+                                console.log("kirjautuminen onnistui");
+                                $.cookie('user', tunnus, { expires: 1 });
+                                $.cookie('password', salasana, { expires: 1 });
+                                window.location = "http://localhost:3003/etusivu";
+
+
+                            }
+
+
+                            else if (tunnus == tunnus && password !== salasana) {
+
+                                console.log("kirjautuminen epäonnistui, salasana ei täsmää");
+                                window.location = "http://localhost:3003";
+
+
+                            }
+                        }
+                        else {
+
+                            console.log("Nyt ei kyllä skulaa");
+                            window.location = "http://localhost:3003";
+                        }
+
+
+
+                    }).fail(function (jqXHR, textStatus, errorThrown) {
+                        // Suoriteaan, jos kutsu epäonnistuu
+                        console.log("Kutsu epäonnistui asdasadasasd");
+
+                    }).always(function (jqXHR, textStatus, errorThrown) {
+                        // suoritetaan aina (riippumatta onnistuiko kutsu vai ei)
+                        // HUOM! 1. parametri sisältää datan jos kutsu onnistui ja 3. parametri jqXHR-olion. Jos kutsu epäonnistui, 1. parametri on jqXHR-olio ja 3. errorThrown
+                        console.log("Kutsu always");
+
+                    });
+
+
+            });
+
+
+
+
+
+
+        });
+
+
+
+
+    </script>
+
+</head>
+<body>
+
+	<form method="post" action="login.html">
+    <div class="input-group">
+        <div class="row">
+            <div class="col-sm-4">
+
+                <h2>Laiterekisteri</h2>
+
+                <br />
+
+                <label for="kayttaja"> Käyttäjätunnus</label>
+                <input type="text" id="tunnus">
+                <label for="salasana"> Salasana</label>
+                <input type="password" id="password">
+
+                <button type="button" id="login">Kirjaudu</button>
+                <button type="button" id="register">Rekisteröidy</button>
+
+            </div>
+        </div>
+    </div>
+	  	
+	</form>
+    
+</body>
+</html>

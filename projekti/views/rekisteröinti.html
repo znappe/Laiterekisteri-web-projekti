@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+
+    <script>
+
+        $(document).ready(function () {
+            
+
+
+            $("#rekisteroidy").click(function () {
+                $("#dialog").dialog("open");
+
+               
+                
+
+                $("#tallenna").click(function () {
+
+                    var nimi = $("#nimi").val();
+                    var salasana = $("#salasana").val();
+                    var oppilaitos = $("#oppilaitos").val();
+                    var ika = $("#sposti").val();
+                    if (nimi.length < 2) {
+
+                        $("#nimi").css("background", "red");
+                        $("#nimimerkkierror").text("Nimimerkki väärä!");
+                    }
+                    if (salasana.length < 2) {
+                        $("#salasana").css("background", "red");
+                        $("#salasanaerror").text("Salasana väärä!");
+                    }
+
+                    else {
+                        $("#dialog").dialog("close");
+                        alert("Rekisteröinti onnistui!");
+                        $("#salasana").css("background", "white");
+                        $("#nimi").css("background", "white");
+                       // buttonin saa poistettua: $("#rekisteroidy").remove();
+
+                        $("#salasana").val("");
+                        $("#nimi").val("");
+                        $("#sposti").val("");
+                        $("#puhnro").val("");
+
+                        if ($('#poxi').prop('checked')) {
+                            $("#lopputulos").text(nimi+ " "+ salasana+ " " + oppilaitos + " " + ika);
+                        }
+                        else {
+                            $("#lopputulos").text(nimi + " " + salasana);
+                        }
+
+                    }
+
+                });
+
+                $('#poxi').click(function () {
+
+                    if ($('#poxi').prop('checked')) {
+                        $("#sposti").prop("disabled", false);
+                        $("#puhnro").prop("disabled", false);
+                        spinneri.spinner("enable");
+                    }
+                    else {
+                        $("#puhnro").prop("disabled", true);
+                        $("#sposti").prop("disabled", true);
+                        spinneri.spinner("disable");
+                    }
+
+                });
+
+
+
+
+                $("#peruuta").click(function () {
+                    $("#dialog").dialog("close");
+                });
+
+            });
+
+
+        });
+        $(function () {
+            $("#dialog").dialog();
+            $("#dialog").dialog("close");
+        });
+
+
+    </script>
+
+</head>
+<body>
+    <input type="button" id="rekisteroidy" value="Rekisteröidy" />
+    <p id="lopputulos"> </p>
+
+
+    <div id="dialog" title="Rekisteröityminen">
+        <form>
+            <fieldset>
+                <label for="nimi">Käyttäjätunnus: </label>
+                <input type="text" name="nimi" id="nimi" value="" class="text ui-widget-content ui-corner-all">
+                <label for="salasana">Salasana: </label>
+                <input type="password" name="salasana" id="salasana" value="" class="text ui-widget-content ui-corner-all">
+                
+                
+                <br>
+
+                <label id="nimimerkkierror" value=""></label>
+                <br />
+                <label id="salasanaerror" value=""></label>
+
+
+                <div id="kayttajatiedot">
+                    <label for="sposti">Sähköposti: </label>
+                    <input id="sposti" type="text" />
+                    <label for="puhnro">Puhelinnumero: </label>
+                    <input id="puhnro" type="text" class="text ui-widget-content ui-corner-all" />
+
+
+
+                </div>
+                <br />
+                <br />
+                <input type="button" id="tallenna" Value="Tallenna" />
+
+                <input type="button" id="peruuta" value="Peruuta" />
+                <br />
+                <br />
+            </fieldset>
+        </form>
+    </div>
+</body>
+</html>
